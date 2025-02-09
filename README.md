@@ -85,3 +85,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ![Sensor Stream Dashboard](screenshot.png)
 _Sensor Stream Web Dashboard showing real-time sensor data visualization_
+
+![Demo Picture](demo.JPG)
+_Demo of the working app_
