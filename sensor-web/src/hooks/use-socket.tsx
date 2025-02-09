@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
-const SOCKET_URL = "https://c0d2-184-146-142-196.ngrok-free.app"; // Replace with your backend URL
+const SOCKET_URL = "http://raspberrypi.local:5000"; // Replace with your backend URL
 
 interface SensorData {
   latitude: number | null;

@@ -52,7 +52,7 @@ export const SensorContext = createContext<SensorContextProps>({
   setSensorData: () => {},
 });
 
-const SERVER_URL = "https://c0d2-184-146-142-196.ngrok-free.app";
+const SERVER_URL = "http://raspberrypi.local:5000";
 
 export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
