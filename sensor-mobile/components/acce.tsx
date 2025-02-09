@@ -21,7 +21,7 @@ export const Acce = () => {
   );
 
   const _slow = () => {
-    Accelerometer.setUpdateInterval(1000);
+    Accelerometer.setUpdateInterval(2000);
     setActiveSpeed("slow");
   };
   const _fast = () => {

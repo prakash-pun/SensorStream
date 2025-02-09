@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend } from "recharts";
 import {
@@ -17,76 +15,17 @@ import {
   Mountain,
 } from "lucide-react";
 import LocationMap from "@/components/location-map";
-
-interface SensorData {
-  latitude: number | null;
-  longitude: number | null;
-  location: string | null;
-  accuracy: number | null;
-  altitudeAccuracy: number | null;
-  heading: number | null;
-  speed: number | null;
-  device: {
-    model: string;
-    brand: string;
-    os: string;
-    osVersion: string;
-  };
-  gyroscope: { x: number; y: number; z: number };
-  accelerometer: { x: number; y: number; z: number };
-}
+import { useSocket } from "@/hooks/use-socket";
+import { Loading } from "@/components/loading";
 
 export default function Home() {
-  const [sensorData, setSensorData] = useState<SensorData | null>(null);
-  const [gyroChartData, setGyroChartData] = useState<any[]>([]);
-  const [accelChartData, setAccelChartData] = useState<any[]>([]);
-
-  // Simulate incoming data every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const newData: SensorData = {
-        latitude: Math.random() * 180 - 90,
-        longitude: Math.random() * 360 - 180,
-        location: "Sample Location",
-        accuracy: Math.random() * 100,
-        altitudeAccuracy: Math.random() * 100,
-        heading: Math.random() * 360,
-        speed: Math.random() * 30,
-        device: {
-          model: "Sample Model",
-          brand: "Sample Brand",
-          os: "Sample OS",
-          osVersion: "1.0",
-        },
-        gyroscope: {
-          x: Math.random() * 10 - 5,
-          y: Math.random() * 10 - 5,
-          z: Math.random() * 10 - 5,
-        },
-        accelerometer: {
-          x: Math.random() * 20 - 10,
-          y: Math.random() * 20 - 10,
-          z: Math.random() * 20 - 10,
-        },
-      };
-      setSensorData(newData);
-      const timestamp = new Date().toLocaleTimeString();
-      setGyroChartData((prevData) => [
-        ...prevData.slice(-19),
-        { timestamp, ...newData.gyroscope },
-      ]);
-      setAccelChartData((prevData) => [
-        ...prevData.slice(-19),
-        { timestamp, ...newData.accelerometer },
-      ]);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const { sensorData, gyroChartData, accelChartData } = useSocket();
 
   if (!sensorData) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
+
+  console.log(sensorData);
 
   return (
     <div className="p-2 sm:p-4 px-4 space-y-4 bg-gradient-to-br from-purple-50 to-blue-50 min-h-screen max-w-6xl mx-auto">
@@ -96,8 +35,9 @@ export default function Home() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-4">
         <div className="bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg col-span-1 sm:col-span-2 lg:col-span-3 rounded-lg">
           <LocationMap
-            latitude={sensorData.latitude}
-            longitude={sensorData.longitude}
+            latitude={sensorData?.latitude}
+            longitude={sensorData?.longitude}
+            location={sensorData?.location}
           />
         </div>
         <div className=" sm:col-span-2 lg:col-span-1">
@@ -174,12 +114,12 @@ export default function Home() {
                   dataKey="timestamp"
                   tick={{ fontSize: 10 }}
                   interval="preserveStartEnd"
-                  tickFormatter={(value) => value.split(":")[1]}
+                  tickFormatter={(value) => value?.split(":")[1]}
                 />
                 <YAxis
                   tick={{ fontSize: 10 }}
                   width={30}
-                  tickFormatter={(value) => value.toFixed(1)}
+                  tickFormatter={(value) => value?.toFixed(1)}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend iconType="circle" />
@@ -220,15 +160,15 @@ export default function Home() {
               config={{
                 accelX: {
                   label: "X",
-                  color: "hsl(var(--chart-4))",
+                  color: "hsl(var(--chart-1))",
                 },
                 accelY: {
                   label: "Y",
-                  color: "hsl(var(--chart-5))",
+                  color: "hsl(var(--chart-2))",
                 },
                 accelZ: {
                   label: "Z",
-                  color: "hsl(var(--chart-6))",
+                  color: "hsl(var(--chart-3))",
                 },
               }}
               className="h-[300px] sm:h-[400px] w-full aspect-auto"
@@ -239,12 +179,12 @@ export default function Home() {
                   dataKey="timestamp"
                   tick={{ fontSize: 10 }}
                   interval="preserveStartEnd"
-                  tickFormatter={(value) => value.split(":")[1]}
+                  tickFormatter={(value) => value?.split(":")[1]}
                 />
                 <YAxis
                   tick={{ fontSize: 10 }}
                   width={30}
-                  tickFormatter={(value) => value.toFixed(1)}
+                  tickFormatter={(value) => value?.toFixed(1)}
                 />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend iconType="circle" />

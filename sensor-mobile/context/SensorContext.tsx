@@ -52,18 +52,16 @@ export const SensorContext = createContext<SensorContextProps>({
   setSensorData: () => {},
 });
 
-const SERVER_URL = "https://6aa1-184-146-142-196.ngrok-free.app";
+const SERVER_URL = "https://c0d2-184-146-142-196.ngrok-free.app";
 
 export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [sensorData, setSensorData] = useState<SensorData>(defaultSensorData);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socket, setSocket] = useState<Socket | any>(null);
 
   useEffect(() => {
-    const newSocket = io(SERVER_URL, {
-      transports: ["websocket"], // Force WebSockets instead of polling
-    });
+    const newSocket = io(SERVER_URL);
 
     newSocket.on("connect", () => {
       console.log("✅ Connected to WebSocket server");
@@ -103,11 +101,6 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     sendData();
-    const intervalId = setInterval(sendData, 1000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
   }, [socket, sensorData]);
 
   // 🔹 Update device information on mount

@@ -12,9 +12,14 @@ mapboxgl.accessToken =
 interface LocationMapProps {
   latitude?: number | null;
   longitude?: number | null;
+  location?: string | null;
 }
 
-const LocationMap: React.FC<LocationMapProps> = ({ latitude, longitude }) => {
+const LocationMap: React.FC<LocationMapProps> = ({
+  latitude,
+  longitude,
+  location,
+}) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const marker = useRef<mapboxgl.Marker | null>(null);
@@ -34,23 +39,25 @@ const LocationMap: React.FC<LocationMapProps> = ({ latitude, longitude }) => {
     marker.current = new mapboxgl.Marker().setLngLat([0, 0]).addTo(map.current);
   }, []);
 
-  // useEffect(() => {
-  //   if (!map.current || !marker.current) return;
-  //   if (latitude === null || longitude === null) return;
+  useEffect(() => {
+    if (!map.current || !marker.current) return;
+    if (latitude === null || longitude === null) return;
 
-  //   map.current.flyTo({
-  //     center: [43.6901917, -79.3028316],
-  //     zoom: 14,
-  //     // essential: true,
-  //   });
+    map.current.flyTo({
+      center: [longitude || -79.3028316, latitude || 43.6901917],
+      zoom: 14,
+    });
 
-  //   marker.current.setLngLat([43.6901917, -79.3028316]);
-  // }, []);
+    marker.current.setLngLat([
+      longitude || -79.3028316,
+      latitude || 43.6901917,
+    ]);
+  }, [latitude, longitude]);
 
   return (
     <div className="relative rounded-lg">
       <div className="sidebar">
-        Longitude: {latitude}, Longitude: {longitude}
+        Longitude: {latitude}, Longitude: {longitude}, Location: {location}
       </div>
       <div
         ref={mapContainer}

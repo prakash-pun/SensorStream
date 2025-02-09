@@ -21,7 +21,7 @@ export const Gyro = () => {
   );
 
   const _slow = () => {
-    Gyroscope.setUpdateInterval(1000);
+    Gyroscope.setUpdateInterval(2000);
     setActiveSpeed("slow");
   };
 
