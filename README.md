@@ -67,20 +67,6 @@ Sensor Stream is a multi-platform application designed to collect, visualize, an
    python app.py
    ```
 
-### Usage
-
-- Open the Sensor Mobile application on your mobile device to start collecting sensor data.
-- Access the Sensor Web application in your browser to visualize the collected data.
-- Monitor the server logs to see the incoming sensor data and storage status.
-
-### Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
-
-### License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
 ### Screenshots
 
 ![Sensor Stream Dashboard](screenshot.png)
@@ -91,7 +77,7 @@ _Demo of the working app_
 
 ## Mobile Screenshot
 
-<img src="screenshots/screen1.png" width="100px" /> <br /><br />
-<img src="screenshots/screen2.png" width="100px" />
+<img src="screenshots/screen1.png" width="150px" /> <br /><br />
+<img src="screenshots/screen2.png" width="150px" />
 
 [Demo Video](https://drive.google.com/file/d/1rCW1SEvG0An0Lh3ZGs52VYfu9jOEeTix/view?usp=sharing)
