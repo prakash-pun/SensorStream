@@ -88,3 +88,10 @@ _Sensor Stream Web Dashboard showing real-time sensor data visualization_
 
 ![Demo Picture](demo.JPG)
 _Demo of the working app_
+
+## Mobile Screenshot
+
+<img src="screenshots/screen1.png" width="100px" /> <br /><br />
+<img src="screenshots/screen2.png" width="100px" />
+
+[Demo Video](https://drive.google.com/file/d/1rCW1SEvG0An0Lh3ZGs52VYfu9jOEeTix/view?usp=sharing)

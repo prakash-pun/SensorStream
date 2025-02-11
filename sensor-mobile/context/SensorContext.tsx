@@ -25,6 +25,8 @@ interface SensorData {
 interface SensorContextProps {
   sensorData: SensorData;
   setSensorData: React.Dispatch<React.SetStateAction<SensorData>>;
+  sendSensorToggle: boolean;
+  setSendSensorToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Default Sensor Data
@@ -50,6 +52,8 @@ const defaultSensorData: SensorData = {
 export const SensorContext = createContext<SensorContextProps>({
   sensorData: defaultSensorData,
   setSensorData: () => {},
+  sendSensorToggle: false,
+  setSendSensorToggle: () => {},
 });
 
 const SERVER_URL = "http://raspberrypi.local:5000";
@@ -59,6 +63,9 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [sensorData, setSensorData] = useState<SensorData>(defaultSensorData);
   const [socket, setSocket] = useState<Socket | any>(null);
+  const [sendSensorToggle, setSendSensorToggle] = useState<boolean>(false);
+
+  console.log("toogle", sendSensorToggle);
 
   useEffect(() => {
     const newSocket = io(SERVER_URL);
@@ -92,6 +99,13 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
 
+    console.log("🔄 hah ha ", sendSensorToggle);
+
+    if (!sendSensorToggle) {
+      console.log("⏹️ Stopped sending sensor data");
+      return;
+    }
+
     const sendData = () => {
       socket.emit("sensor_data", {
         timestamp: Date.now(),
@@ -101,7 +115,7 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     sendData();
-  }, [socket, sensorData]);
+  }, [socket, sensorData, sendSensorToggle]);
 
   // 🔹 Update device information on mount
   useEffect(() => {
@@ -117,7 +131,14 @@ export const SensorProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <SensorContext.Provider value={{ sensorData, setSensorData }}>
+    <SensorContext.Provider
+      value={{
+        sensorData,
+        setSensorData,
+        sendSensorToggle,
+        setSendSensorToggle,
+      }}
+    >
       {children}
     </SensorContext.Provider>
   );

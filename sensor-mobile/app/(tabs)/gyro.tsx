@@ -5,9 +5,9 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { type EventSubscription } from "expo-modules-core";
 import * as Sensors from "expo-sensors";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { io } from "socket.io-client";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SensorContext } from "@/context/SensorContext";
 
 const FAST_INTERVAL = 16;
 const SLOW_INTERVAL = 1000;
@@ -17,18 +17,21 @@ export default class SensorScreen extends React.Component {
     title: "Sensors",
   };
 
+  static contextType = SensorContext;
+
   handleClick = () => {
-    const socket = io("http://127.0.0.1:5000");
-
-    // Listen for sensor data from the backend
-    socket.on("sensor_data", (data) => {
-      console.log("Received sensor data: ", data);
-    });
-
-    // Send sensor data to the backend
-    socket.emit("sensor_data", { x: 1.2, y: 0.3, z: -0.5 });
+    // Access the toggle function from the context
+    const { sendSensorToggle, setSendSensorToggle }: any = this.context;
+    setSendSensorToggle(!sendSensorToggle);
+    console.log("Send Stream Sensor Toggled");
+    Alert.alert(
+      sendSensorToggle ? "Sending Sensor Data" : "Stopped Sending Sensor Data"
+    );
   };
+
   render() {
+    const { sendSensorToggle }: any = this.context; // Access the state from the context
+
     return (
       <ParallaxScrollView
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -56,7 +59,9 @@ export default class SensorScreen extends React.Component {
               borderRadius: 5,
             }}
           >
-            <Text>Stream Sensor</Text>
+            <Text>
+              {sendSensorToggle ? "Stop Sensor Stream" : "Send Sensor Stream"}
+            </Text>
           </TouchableOpacity>
         </ThemedView>
       </ParallaxScrollView>
